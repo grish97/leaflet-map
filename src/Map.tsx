@@ -20,9 +20,10 @@ export const Map: FC = () => {
   return (
     <MapContainer
       style={{height: "500px", width: "600px", border: "1px solid gray"}}
-      zoom={10}
+      zoom={8}
       crs={CRS.Simple}
       center={[40.184531, 44.623633]}
+      scrollWheelZoom={false}
     >
       {geoJson && (
         <GeoJSON data={geoJson} style={{ color: "green" }} />
