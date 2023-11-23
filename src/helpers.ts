@@ -1,7 +1,7 @@
 import { kml } from "@tmcw/togeojson";
 
 export const getGeoJSON = async () => {
-  const response = await fetch("/hike.kml");
+  const response = await fetch("/info.kml");
   const data = await response.text();
 
   const xml = parseToXML(data);
