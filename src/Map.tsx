@@ -1,21 +1,27 @@
 import {FC, useCallback, useEffect, useState} from "react";
 import {MapContainer, ImageOverlay, Marker, Popup, GeoJSON} from "react-leaflet";
-import {CRS, LatLngBounds} from "leaflet";
+import {CRS, LatLngBounds, geoJson as _geoJSON} from "leaflet";
 
 import { getGeoJSON } from "./helpers";
 
 export const Map: FC = () => {
   const [geoJson, setGeoJSON] = useState<any>(null);
+  const [bounds, setBounds] = useState<any>(null);
 
   const loadData = useCallback(async () => {
-    const geoJSON = await getGeoJSON();
+    const data = await getGeoJSON();
 
-    setGeoJSON(geoJSON);
+    const bounds = _geoJSON(data);
+
+    setBounds(bounds.getBounds());
+    setGeoJSON(data);
   }, []);
 
   useEffect(() => {
     loadData();
   }, []);
+
+  console.log(bounds)
 
   return (
     <MapContainer
@@ -26,7 +32,15 @@ export const Map: FC = () => {
       scrollWheelZoom={false}
     >
       {geoJson && (
-        <GeoJSON data={geoJson} style={{ color: "green" }} />
+        <>
+          TileLayer
+          <ImageOverlay
+            url="/image-overlay.png"
+            bounds={bounds}
+          >
+            <GeoJSON data={geoJson} style={{ color: "green" }} />
+          </ImageOverlay>
+        </>
       )}
     </MapContainer>
   );
